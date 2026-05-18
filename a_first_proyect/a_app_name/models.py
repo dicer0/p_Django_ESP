@@ -54,10 +54,10 @@ class Car(models.Model):
         #my_car.title  #Así se accede al atributo actual del objeto.
         #my_car.save()  #Método para actualizar los datos del objeto en la DB.
         #my_car.delete()#Método para borrar un objeto en la DB.
-#Para que podamos escribir fácilmente código Python en consola, permitiéndonos añadir, 
-#eliminar y modificar datos en la DB a través de objetos, debemos instalar la librería 
-#iPython con el comando: pip install ipython y luego abrir la consola con 
-#python manage.py shell.
+#Para que podamos escribir fácilmente código Python en consola, permitiéndonos 
+#añadir, eliminar y modificar datos en la DB a través de objetos, debemos 
+#instalar la librería iPython con el comando: pip install ipython y luego abrir 
+#la consola con: python manage.py shell.
 
 
 
@@ -76,10 +76,10 @@ class Author(models.Model):
     birth_date = models.DateField()
     def __str__(self):
         return self.name
-class Profile(models.Model): #Esta es información que se quiere añadir al Autor es 1:1.
-    #Relación de uno a uno: Al hacer esta conexión, solo la tabla que sea opcional de 
-    #llenar, tendrá el métoodo OneToOneField() y dentro de su paréntesis recibirá la 
-    #tabla principal de la relación.
+class Profile(models.Model): #Esta es información que se quiere añadir al Autor.
+    #Relación de uno a uno: Al hacer esta conexión, solo la tabla que sea opcional 
+    #de llenar, tendrá el métoodo OneToOneField() y dentro de su paréntesis recibirá 
+    #la tabla principal de la relación.
     # - on_delete: Lo que se hace en este parámetro es indicar que es lo que va a 
     #   pasar en esta tabla, cuando la otra deje de existir.
     #       - models.DO_NOTHING: Esta opción hace que no le pase nada a esta tabla 
@@ -97,8 +97,8 @@ class Book(models.Model):
     publication_date = models.DateField()
     #Relación de uno a muchos: Al hacer esta relación, debemos identificar cual de 
     #las tablas conectadas es la que tendrá la ForeignKey y esta es la que dependerá 
-    #de la otra, en otras palabras, un libro puede tener una sola editorial (publisher), 
-    #pero una editorial puede tener varios libros.
+    #de la otra, en otras palabras, un libro puede tener una sola editorial 
+    #(publisher), pero una editorial puede tener varios libros.
     #models.ForeignKey(): Clase para relacionar dos tablas entre ellas, para ello 
     #debe recibir entre paréntesis cual es la clase a la que se está relacionando.
     # - on_delete: Lo que se hace en este parámetro es indicar que es lo que va a 
@@ -111,17 +111,41 @@ class Book(models.Model):
     #         sea borrada.
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
     #Relación de muchos a muchos: Al hacer esta conexión, ambas tablas relacionadas 
-    #poseerán una ForeignKey de tipo ManyToManyField, ya que ambas dependen de la otra, 
-    #en otras palabras, un libro puede tener varios autores y un autor puede tener 
-    #varios libros.
-    #models.ManyToManyField(): Clase para relacionar dos tablas entre ellas, para ello 
-    #debe recibir entre paréntesis cual es la clase a la que se está relacionando.
+    #poseerán una ForeignKey de tipo ManyToManyField, ya que ambas dependen de la 
+    #otra, en otras palabras, un libro puede tener varios autores y un autor puede 
+    #tener varios libros.
+    #models.ManyToManyField(): Clase para relacionar dos tablas entre ellas, para 
+    #ello debe recibir entre paréntesis cual es la clase a la que se está 
+    #relacionando.
     # - related_name: Hace referencia al nombre del atributo con el que se hace 
     #   referencia a esta tabla dentro de la otra.
     authors = models.ManyToManyField(Author, related_name="authors")
-    #objeto = Clase.objects.first(): Este es un manager, el cual nos permite traer los 
-    #datos de una clase en específico en la DB hacia nuestra terminal shell y guardarlo 
-    #en una variable.
+    #Managers: Son métodos que nos permiten ejecutar acciones en las listas de datos 
+    #de una database (DB), a las cuales Django denomina como QuerySets, como contar, 
+    #ver el primer y último elemento, etc. Imprimiendo en consola el valor que se 
+    #haya declarado en la función string __str()__ de la clase:
+    # - Clase.objects: El atributo objects es la forma en la que se puede aplicar un 
+    #   manager hacia un objeto que sea instancia de una clase o tabla de una DB.
+    #   A través del operador .objects se pueden utilizar distintos métodos para 
+    #   ejecutar acciones específicas con las listas de datos que sacamos de las 
+    #   filas de nuestras tablas de las bases de datos:
+    #    - Clase.objects.count(): Cuenta todos los datos de la tabla "Clase".
+    #    - Clase.objects.first(): Accede al primer dato de la tabla "Clase" en la DB.
+    #    - Clase.objects.last(): Accede al último dato de la tabla "Clase" en la DB.
+    #    - Clase.objects.all(): Accede al todos los datos de la tabla "Clase".
+    #       - Clase.objects.all().order_by('columna'): Ordena de menor a mayor los 
+    #         elementos de la tabla, en función del atributo dado en el paréntesis.
+    #    - Clase.objects.filter(columna="valor"): Accede al dato de la tabla "Clase" 
+    #      que cumpla con la condición dada en el paréntesis.
+    #      -  Clase.objects.filter(columna="valor").detele(): Borra el registro de 
+    #         la base de datos que cumpla con la condición descrita en el paréntesis.
+    #    - Clase.objects.create(columna="valor"): Inserta un nuevo dato en la tabla.
+    #        - Clase??: Este operador nos deja ver la clase para saber que datos se 
+    #          deben introducir en las columnas de la tabla al crear un nuevo 
+    #          registro (fila).
+    #objeto = Clase.objects.first(): Este es un manager, el cual nos permite traer 
+    #los datos de una clase en específico en la DB hacia nuestra terminal shell y 
+    #guardarlo en una variable.
     #book.authors.set(List): Cuando se quiera añadir en la terminal shell de Django 
     #varios autores a un libro, primero se deberán introucir a una lista y luego 
     #utilizar el método set para añadirlos a su campo de authors. 
