@@ -10,9 +10,17 @@
         Esta es la lista de carros.
     </h1>
     <lu>
+        <!--Tags: Se denotan con el símbolo de porcentaje % y llaves simples 
+        {}, permitiéndonos añadir funcionalidad a nuestro código HTML, como 
+        lo pueden ser ciclos for, condicionales y urls. De igual forma se 
+        debe añadir un tag de cierre con el nombre endif o endfor.-->
         {% for car in car_list %}
             <li>
+                <!--Variables en Tamplates: Dentro de Django, las variables
+                se deben declarar dentro de doble llave.-->
                 {{car.title}}
+                <!--De igual forma se pueden declarar filtro a través de 
+                algo que llama un pipeline (|) -->
             </li>
         {% endfor %}
     </lu>

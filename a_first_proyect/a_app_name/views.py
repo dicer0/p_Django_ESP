@@ -4,6 +4,9 @@
 #cual puede incluir datos como usuarios, fechas, etc. y los inserta en el 
 #template (UI).  
 from django.shortcuts import render
+#django.views.generic: Librería de Django encargada de procesar las 
+#peticiones del usuario y devolver respuestas hacia el navegador (template).
+from django.views.generic import TemplateView
 
 # •	View (V): Esta se refiere a un conector entre el modelo que tiene 
 # acceso a los datos y el template (UI) que los está pidiendo para saber si 
@@ -16,7 +19,7 @@ from django.shortcuts import render
 #   ←: La vista recibe una petición (id, request y query) del template del 
 #      template y se conectará al modelo para encontrar el dato.
 
-
+#VISTA EN FUNCIÓN: Se define de esta forma a las vistas más sencillas.
 def my_view(request):
     #Datos a mandar de la vista hacia el template, lo que después se 
     #traerá desde el modelo (base de datos), hacia la vista y luego el 
@@ -31,8 +34,6 @@ def my_view(request):
     context = {
         "car_list": car_list
     }
-
-
     #render: Renderizar es tomar datos dinámicos del modelo y asignarlos a 
     #una template HTML para construir la página final que el usuario ve.
     #Para que Django encuentre el template que recibirá el resultado de la 
@@ -52,3 +53,21 @@ def my_view(request):
     #Posteriormente, deberemos crear la carpeta y archivo de 
     #a_first_proyect/a_app_name/templates/a_app_name/car_list.html
     return render(request, "a_app_name/car_list.html", context)
+
+
+#VISTA EN CLASE: Es la forma estandar de definir las vistas y de esta forma 
+#es como se manejan las vistas más normales y complejas. Lo normal es además
+#al final del nombre de la clase, colocar la palabra View.
+class CarListView(TemplateView):
+    #En las clases de vistas, primero se declara el directorio del template. 
+    template_name = "a_app_name/car_list.html"
+    #Y luego una función (método) que indique los datos a procesar, osea el
+    #contexto.
+    def get_context_data(self):
+        car_list = [
+            {"title": "BMW"},
+            {"title": "Mazda"},
+        ]
+        return {
+            "car_list": car_list
+        }
